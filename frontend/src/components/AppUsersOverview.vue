@@ -1,8 +1,6 @@
 <template>
   <div class="row justify-content-center py-4">
-    <div class="graph-view col-md-6">
-      <img src="https://www.amcharts.com/wp-content/uploads/2013/12/demo_910_none-1.png" style="width: 100%">
-    </div>
+    <app-connection-graph/>
     <div class="users-view col-md-4">
       <app-chat
           v-if="chatOnline"
@@ -25,9 +23,11 @@
 <script>
 import AppUsersList from "@/components/AppUsersList";
 import AppChat from "@/components/AppChat";
+import AppConnectionGraph from "./AppConnectionGraph";
 
 export default {
   components: {
+    AppConnectionGraph,
     AppUsersList,
     AppChat
   },
