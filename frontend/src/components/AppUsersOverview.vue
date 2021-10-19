@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-center py-4">
-    <app-connection-graph :activeUsersList="usersArray"/>
+    <app-connection-graph :activeUsersList="usersArray" ref="nodeItem"/>
     <div class="users-view col-md-4">
       <app-chat
           v-if="chatOnline"
@@ -60,8 +60,12 @@ export default {
     },
     saveUsersList(list) {
       list.forEach((user) => {
-        this.usersArray.push({name: user});
-      })
+        this.usersArray.push({id: user});
+      });
+      this.validateNode();
+    },
+    validateNode() {
+      this.$refs.nodeItem.validateData();
     }
   },
   created() {
