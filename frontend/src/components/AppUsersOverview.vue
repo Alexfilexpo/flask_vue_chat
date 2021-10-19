@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-center py-4">
-    <app-connection-graph/>
+    <app-connection-graph :activeUsersList="usersArray"/>
     <div class="users-view col-md-4">
       <app-chat
           v-if="chatOnline"
@@ -15,6 +15,7 @@
           :username="username"
           :socket="socket"
           @newChat="openChat"
+          @sendUsersList="saveUsersList"
       />
     </div>
   </div>
@@ -45,7 +46,8 @@ export default {
     return {
       chatOnline: false,
       messageTo: null,
-      messages: []
+      messages: [],
+      usersArray: []
     }
   },
   methods: {
@@ -55,6 +57,11 @@ export default {
     },
     newMessage(message) {
       this.messages.push(message);
+    },
+    saveUsersList(list) {
+      list.forEach((user) => {
+        this.usersArray.push({name: user});
+      })
     }
   },
   created() {

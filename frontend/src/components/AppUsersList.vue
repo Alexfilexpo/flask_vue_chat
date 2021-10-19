@@ -9,7 +9,6 @@
       <ul>
         <li v-for="user in activeUsers" v-bind:key="user" @click="startChat(user)">{{ user }}</li>
       </ul>
-      <button type="submit" @submit.prevent>GET USERS</button>
     </div>
   </div>
 </template>
@@ -28,7 +27,7 @@ export default {
   },
   data() {
     return {
-      activeUsers: []
+      activeUsers: null
     }
   },
   methods: {
@@ -40,6 +39,7 @@ export default {
     this.socket.emit('get_users');
     this.socket.on('users', (data) => {
       this.activeUsers = data.data;
+      this.$emit('sendUsersList', this.activeUsers);
     });
   }
 }

@@ -23,10 +23,12 @@ def connect():
 @socketio.on('authorize', namespace=NAMESPACE)
 def authorize(username):
     active_users[username] = request.sid
+    print(active_users)
 
 
 @socketio.on('get_users', namespace=NAMESPACE)
 def users():
+    print('Sending users to client')
     emit('users', {'data': list(active_users.keys())}, broadcast=True)
 
 
