@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-center py-4">
-    <app-connection-graph :activeUsersList="usersArray" ref="nodeItem"/>
+    <app-connection-graph :activeUsersList="usersArray" :activeUsersLink="userLinks" ref="nodeItem"/>
     <div class="users-view col-md-4">
       <app-chat
           v-if="chatOnline"
@@ -47,13 +47,16 @@ export default {
       chatOnline: false,
       messageTo: null,
       messages: [],
-      usersArray: []
+      usersArray: [],
+      userLinks: [],
     }
   },
   methods: {
     openChat(user) {
       this.chatOnline = true;
       this.messageTo = user;
+      this.userLinks.push({source: this.username, target: user})
+      this.validateNode()
     },
     newMessage(message) {
       this.messages.push(message);
