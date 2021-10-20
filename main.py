@@ -34,20 +34,15 @@ def users():
     emit('users', {'data': list(active_users.keys())}, broadcast=True)
 
 
-# @socketio.on('open_chat_session', namespace=NAMESPACE)
-# def open_chat_session(payload):
-#     new_chat_session = payload['source'] + ':' + payload['target']
-#     reversed_chat_session = payload['target'] + ':' + payload['source']
-#     if len(active_chat_sessions) > 0:
-#         for chat_session in active_chat_sessions:
-#             if (new_chat_session == chat_session) or (reversed_chat_session == chat_session):
-#                 print('Chat session is already exits')
-#             else:
-#                 active_chat_sessions.add(new_chat_session)
-#     else:
-#         active_chat_sessions.add(new_chat_session)
-#     print(active_chat_sessions)
-#     emit('updateChatSessions', {'data': list(active_chat_sessions)}, broadcast=True)
+@socketio.on('open_chat_session', namespace=NAMESPACE)
+def open_chat_session(payload):
+    new_chat_session = payload['source'] + ':' + payload['target']
+    reversed_chat_session = payload['target'] + ':' + payload['source']
+    if (new_chat_session in active_chat_sessions) or (reversed_chat_session in active_chat_sessions):
+        print('Chat session is already exits')
+    else:
+        active_chat_sessions.add(new_chat_session)
+    emit('updateChatSessions', {'data': list(active_chat_sessions)}, broadcast=True)
 
 
 @socketio.on('send_message', namespace=NAMESPACE)

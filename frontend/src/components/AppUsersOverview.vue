@@ -55,8 +55,7 @@ export default {
     openChat(user) {
       this.chatOnline = true;
       this.messageTo = user;
-      this.userLinks.push({source: this.username, target: user})
-      this.requestGraph()
+      this.socket.emit('open_chat_session', {source: this.username, target: user});
     },
     newMessage(message) {
       this.messages.push(message);
@@ -76,6 +75,14 @@ export default {
     this.socket.on('receiveMessage', (data) => {
       this.newMessage(data.message);
       this.openChat(data.messageFrom);
+    })
+    this.socket.on('updateChatSessions', (data) => {
+      let active_sessions = data.data
+      active_sessions.forEach((session) => {
+        let session_nodes = session.split(':')
+        this.userLinks.push({source: session_nodes[0], target: session_nodes[1]})
+      })
+      this.requestGraph();
     })
   }
 }
