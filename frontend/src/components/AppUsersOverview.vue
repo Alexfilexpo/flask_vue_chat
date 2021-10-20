@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-center py-4">
-    <app-connection-graph :activeUsersList="usersArray" :activeUsersLink="userLinks" ref="nodeItem"/>
+    <app-connection-graph :activeUsersList="usersArray" :activeUsersLink="userLinks" ref="graphPointer"/>
     <div class="users-view col-md-4">
       <app-chat
           v-if="chatOnline"
@@ -56,7 +56,7 @@ export default {
       this.chatOnline = true;
       this.messageTo = user;
       this.userLinks.push({source: this.username, target: user})
-      this.validateNode()
+      this.requestGraph()
     },
     newMessage(message) {
       this.messages.push(message);
@@ -65,10 +65,10 @@ export default {
       list.forEach((user) => {
         this.usersArray.push({id: user});
       });
-      this.validateNode();
+      this.requestGraph();
     },
-    validateNode() {
-      this.$refs.nodeItem.validateData();
+    requestGraph() {
+      this.$refs.graphPointer.createGraph();
     }
   },
   created() {

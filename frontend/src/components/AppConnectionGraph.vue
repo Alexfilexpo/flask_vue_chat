@@ -5,7 +5,6 @@
     background-position: center;
   ">
     <svg width="560" height="360"></svg>
-    <button type="submit" @submit.prevent @click="getNode">TOUCH ME</button>
   </div>
 </template>
 <script>
@@ -17,23 +16,28 @@ export default {
     return {}
   },
   methods: {
-    validateData() {
+    createGraph() {
+      // Get svg tag from template
       let svg = d3.select("svg"),
           width = +svg.attr("width"),
           height = +svg.attr("height"),
+          // Create color range for new elements
           color = d3.scaleOrdinal()
             .domain(d3.range(this.activeUsersList.length))
             .range(d3.schemeCategory10)
 
+      // Create nodes (for circles) and links (for links between circles) arrays
       let onlineNodes = this.activeUsersList
       let onlineLinks = this.activeUsersLink
       let nodes = [],
           links = [];
 
+      // Iterate through users from parent component
       onlineNodes.forEach((node) => {
         nodes.push(node)
       })
 
+      // Iterate through created chat sessions between users from parent component
       for (let n = 0; n < onlineLinks.length; n++) {
         let linkObject = {source: null, target:null}
         for (let i = 0; i < nodes.length; i++) {
@@ -47,6 +51,7 @@ export default {
         links.push(linkObject)
       }
 
+      // Create new graph simulation based on nodes and links data
       let simulation = d3.forceSimulation(nodes)
           .force("charge", d3.forceManyBody().strength(-400))
           .force("link", d3.forceLink(links).distance(200))
@@ -55,16 +60,20 @@ export default {
           .alphaTarget(1)
           .on("tick", ticked)
 
+      // Remove previous published graph template
       svg.select("g").remove()
 
+      // Create new graph template
       let g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 
+      // Create new link tag for graph template
       let link = g.append("g")
           .style("stroke-dasharray", ("3, 3"))
           .attr("stroke", "#000")
           .attr("stroke-width", 6)
           .selectAll(".link")
 
+      // Create new node tag for graph template
       let node = g.append("g")
           .attr("stroke", "#000")
           .selectAll(".node");
@@ -73,8 +82,6 @@ export default {
       //   console.log('888888888888888888888')
       //   console.log(links[n])
       // }
-      //
-      //
       //
       // for (let n = 0; n < links.length; n++) {
       //   console.log('SOURCE = ' + links[n])
@@ -105,6 +112,7 @@ export default {
       //   });
       // }
 
+      // Recreate graph simulation with new data
       restart();
 
       // d3.timeout(function() {
@@ -138,6 +146,7 @@ export default {
       //   restart();
       // }, 2000, d3.now() + 1000);
 
+      // Simulation restart for data from parent components
       function restart() {
         // Apply the general update pattern to the nodes.
         node = node.data(nodes, function(d) { return d.id;});
@@ -165,6 +174,7 @@ export default {
         simulation.alpha(1).restart();
       }
 
+      // Building appearance and animations of the graph
       function ticked() {
         node.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')' })
 
