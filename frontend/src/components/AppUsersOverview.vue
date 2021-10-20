@@ -62,6 +62,7 @@ export default {
       this.messages.push(message);
     },
     saveUsersList(list) {
+      this.usersArray.length = 0
       list.forEach((user) => {
         this.usersArray.push({id: user});
       });
