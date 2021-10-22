@@ -10,7 +10,7 @@
         <li v-for="message in messages" :key="message">{{ message }}</li>
       </ul>
     </div>
-    <input type="text" v-model="privateMessage" placeholder="Type your message here...">
+    <input type="text" v-model="messageInput" @keyup.enter="sendMessage" placeholder="Type your message here...">
     <button type="submit" @submit.prevent.stop @click="sendMessage">Send</button>
     <button>Leave chat</button>
   </div>
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      privateMessage: null
+      messageInput: null
     }
   },
   methods: {
@@ -43,10 +43,10 @@ export default {
       this.socket.emit('send_message', {
         'messageFrom': this.username,
         'messageTo': this.messageTo,
-        'message': this.privateMessage
+        'message': this.messageInput
       });
-      this.$emit('newMessage', this.username + ': ' +this.privateMessage);
-      this.privateMessage = null
+      this.$emit('newMessage', this.username + ': ' + this.messageInput);
+      this.messageInput = null
     }
   }
 }

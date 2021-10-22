@@ -65,7 +65,9 @@ export default {
     },
     newMessage(message) {
       this.messages.push(message);
-      this.$refs.userListPointer.countMessages();
+      if (this.chatOnline == false) {
+        this.$refs.userListPointer.countMessages();
+      }
     },
     saveUsersList(list) {
       this.usersArray.length = 0
