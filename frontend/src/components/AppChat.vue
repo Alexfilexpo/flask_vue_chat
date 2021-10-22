@@ -45,7 +45,7 @@ export default {
         'messageTo': this.messageTo,
         'message': this.privateMessage
       });
-      this.$emit('newMessage', this.privateMessage);
+      this.$emit('newMessage', this.username + ': ' +this.privateMessage);
       this.privateMessage = null
     }
   }

@@ -1,6 +1,10 @@
 <template>
   <div class="row justify-content-center py-4">
-    <app-connection-graph :activeUsersList="usersArray" :activeUsersLink="userLinks" ref="graphPointer"/>
+    <app-connection-graph
+        :activeUsersList="usersArray"
+        :activeUsersLink="userLinks"
+        ref="graphPointer"
+    />
     <div class="users-view col-md-4">
       <app-chat
           v-if="chatOnline"

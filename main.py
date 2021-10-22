@@ -56,8 +56,8 @@ def send_message(payload):
     send_to = payload['messageTo']
     send_to_room_id = active_users[send_to]
     message = payload['message']
-    print(f'Send message "{message}" to {send_to} from {send_from}')
-    emit('receiveMessage', {'messageFrom': send_from, 'messageTo': send_to, 'message': message}, room=send_to_room_id)
+    print(f'Send message "{message}" from {send_from} to {send_to}')
+    emit('receiveMessage', {'messageFrom': send_from, 'messageTo': send_to, 'message': send_from + ': ' + message}, room=send_to_room_id)
 
 
 if __name__ == '__main__':
