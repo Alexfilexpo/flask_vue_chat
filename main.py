@@ -45,6 +45,11 @@ def open_chat_session(payload):
     emit('updateChatSessions', {'data': list(active_chat_sessions)}, broadcast=True)
 
 
+@socketio.on('get_open_sessions', namespace=NAMESPACE)
+def get_open_sessions():
+    emit('updateChatSessions', {'data': list(active_chat_sessions)})
+
+
 @socketio.on('send_message', namespace=NAMESPACE)
 def send_message(payload):
     send_from = payload['messageFrom']

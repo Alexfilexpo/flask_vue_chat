@@ -38,17 +38,19 @@ export default {
       })
 
       // Iterate through created chat sessions between users from parent component
-      for (let n = 0; n < onlineLinks.length; n++) {
-        let linkObject = {source: null, target:null}
-        for (let i = 0; i < nodes.length; i++) {
-          if (nodes[i].id == onlineLinks[n].source) {
-            linkObject.source = nodes[i]
+      if (nodes.length !== 0) {
+        for (let n = 0; n < onlineLinks.length; n++) {
+          let linkObject = {source: null, target:null}
+          for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i].id == onlineLinks[n].source) {
+              linkObject.source = nodes[i]
+            }
+            if (nodes[i].id == onlineLinks[n].target) {
+              linkObject.target = nodes[i]
+            }
           }
-          if (nodes[i].id == onlineLinks[n].target) {
-            linkObject.target = nodes[i]
-          }
+          links.push(linkObject)
         }
-        links.push(linkObject)
       }
 
       // Create new graph simulation based on nodes and links data

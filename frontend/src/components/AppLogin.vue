@@ -25,6 +25,7 @@ export default {
     registerUser() {
       this.isAuth = true
       this.socket.emit('authorize', this.username);
+      this.socket.emit('get_open_sessions');
       this.$emit('register', this.username, this.isAuth);
     }
   }
