@@ -18,8 +18,10 @@
           v-else
           :username="username"
           :socket="socket"
+          :messages="messages"
           @newChat="openChat"
           @sendUsersList="saveUsersList"
+          ref="userListPointer"
       />
     </div>
   </div>
@@ -63,6 +65,7 @@ export default {
     },
     newMessage(message) {
       this.messages.push(message);
+      this.$refs.userListPointer.countMessages();
     },
     saveUsersList(list) {
       this.usersArray.length = 0
@@ -78,7 +81,7 @@ export default {
   created() {
     this.socket.on('receiveMessage', (data) => {
       this.newMessage(data.message);
-      this.openChat(data.messageFrom);
+      // this.openChat(data.messageFrom);
     })
     this.socket.on('updateChatSessions', (data) => {
       let active_sessions = data.data

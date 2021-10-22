@@ -7,7 +7,9 @@
     <div class="ms-auto" style="width: 80%">
       <span>List of active users:</span>
       <ul>
-        <li v-for="user in activeUsers" v-bind:key="user" @click="startChat(user)">{{ user }}</li>
+        <li v-for="user in activeUsers" v-bind:key="user" @click="startChat(user)">{{ user }}
+          <span v-if="user in messagesCounter"> [{{ messagesCounter[user] }} new messages]</span>
+        </li>
       </ul>
     </div>
   </div>
@@ -23,16 +25,33 @@ export default {
     },
     socket: {
       required: true
+    },
+    messages: {
+      required: false
     }
   },
   data() {
     return {
-      activeUsers: null
+      activeUsers: null,
+      messagesCounter: {}
     }
   },
   methods: {
     startChat(user) {
       this.$emit('newChat', user);
+    },
+    countMessages() {
+      let rawMessagesCounter = {}
+      this.messages.forEach((message) => {
+        let messageData = message.split(':')
+        let messageFromName = messageData[0]
+        if (messageFromName in rawMessagesCounter) {
+          rawMessagesCounter[messageFromName] += 1
+        } else {
+          rawMessagesCounter[messageFromName] = 1
+        }
+      })
+      this.messagesCounter = rawMessagesCounter
     }
   },
   mounted() {
