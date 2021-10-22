@@ -12,7 +12,7 @@
     </div>
     <input type="text" v-model="messageInput" @keyup.enter="sendMessage" placeholder="Type your message here...">
     <button type="submit" @submit.prevent.stop @click="sendMessage">Send</button>
-    <button>Leave chat</button>
+    <button type="submit" @submit.prevent.stop @click="leaveChat">Leave chat</button>
   </div>
 </template>
 
@@ -58,6 +58,9 @@ export default {
           this.messagesHistory.push(message);
         }
       })
+    },
+    leaveChat() {
+      this.$emit('leaveChat', this.username, this.messageTo);
     }
   }
 }

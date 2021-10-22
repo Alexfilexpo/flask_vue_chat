@@ -13,6 +13,7 @@
           :socket="socket"
           :messages="messages"
           @newMessage="newMessage"
+          @leaveChat="leaveChat"
           ref="chatPointer"
       />
       <app-users-list
@@ -64,6 +65,10 @@ export default {
       this.messageTo = user;
       this.socket.emit('open_chat_session', {source: this.username, target: user});
     },
+    leaveChat(username, messageTo) {
+      this.chatOnline = false;
+      this.socket.emit('close_chat_session', {source: this.username, target: messageTo})
+    },
     newMessage(message) {
       this.messages.push(message);
       if (this.chatOnline == false) {
@@ -89,10 +94,16 @@ export default {
     })
     this.socket.on('updateChatSessions', (data) => {
       let active_sessions = data.data
-      active_sessions.forEach((session) => {
-        let session_nodes = session.split(':')
-        this.userLinks.push({source: session_nodes[0], target: session_nodes[1]})
-      })
+      if (active_sessions.length > 0) {
+        this.userLinks.length = 0
+        active_sessions.forEach((session) => {
+          let session_nodes = session.split(':')
+          this.userLinks.push({source: session_nodes[0], target: session_nodes[1]})
+        })
+      } else {
+        this.userLinks.length = 0
+      }
+
       if (this.chatOnline == true) {
         this.$refs.chatPointer.filterMessages()
       }

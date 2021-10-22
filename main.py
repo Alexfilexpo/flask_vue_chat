@@ -42,6 +42,18 @@ def open_chat_session(payload):
         print('Chat session is already exits')
     else:
         active_chat_sessions.add(new_chat_session)
+    print(f'Active sessions: {active_chat_sessions}')
+    emit('updateChatSessions', {'data': list(active_chat_sessions)}, broadcast=True)
+
+
+@socketio.on('close_chat_session', namespace=NAMESPACE)
+def close_chat_session(payload):
+    new_chat_session = payload['source'] + ':' + payload['target']
+    reversed_chat_session = payload['target'] + ':' + payload['source']
+    if (new_chat_session in active_chat_sessions) or (reversed_chat_session in active_chat_sessions):
+        active_chat_sessions.discard(new_chat_session)
+        active_chat_sessions.discard(reversed_chat_session)
+    print(f'{new_chat_session} - session was removed')
     emit('updateChatSessions', {'data': list(active_chat_sessions)}, broadcast=True)
 
 
