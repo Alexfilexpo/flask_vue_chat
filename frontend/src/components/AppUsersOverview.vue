@@ -13,6 +13,7 @@
           :socket="socket"
           :messages="messages"
           @newMessage="newMessage"
+          ref="chatPointer"
       />
       <app-users-list
           v-else
@@ -67,6 +68,8 @@ export default {
       this.messages.push(message);
       if (this.chatOnline == false) {
         this.$refs.userListPointer.countMessages();
+      } else {
+        this.$refs.chatPointer.filterMessages()
       }
     },
     saveUsersList(list) {
@@ -83,7 +86,6 @@ export default {
   created() {
     this.socket.on('receiveMessage', (data) => {
       this.newMessage(data.message);
-      // this.openChat(data.messageFrom);
     })
     this.socket.on('updateChatSessions', (data) => {
       let active_sessions = data.data
@@ -91,6 +93,9 @@ export default {
         let session_nodes = session.split(':')
         this.userLinks.push({source: session_nodes[0], target: session_nodes[1]})
       })
+      if (this.chatOnline == true) {
+        this.$refs.chatPointer.filterMessages()
+      }
       this.requestGraph();
     })
   }
