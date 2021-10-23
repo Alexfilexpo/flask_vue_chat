@@ -1,14 +1,10 @@
 <template>
   <div class="chat-view">
-    <span>Users in this chat:</span>
-    <ul class="connected-users">
-      <li class="d-inline-flex">{{ username }}</li>
-      <li class="d-inline-flex">{{ messageTo }}</li>
-    </ul>
-    <div class="chat-area border border-5" style="width: 350px;">
-      <ul>
-        <li v-for="message in messagesHistory" :key="message">{{ message }}</li>
-      </ul>
+    <div class="connected-users">
+      <span class="d-inline-flex">Chat between {{ username }} and {{ messageTo }}:</span>
+    </div>
+    <div class="chat-area border border-5 border-dark mb-2" style="width: 350px; height: 400px; overflow-y: auto;">
+      <div :class="message.includes(username)?'bg-primary float-start':'bg-secondary float-end'" class="border border-1 rounded px-2 text-white p-2" style="width: 200px; height: 50px;" v-for="message in messagesHistory" :key="message">{{ message }}</div>
     </div>
     <input type="text" v-model="messageInput" @keyup.enter="sendMessage" placeholder="Type your message here...">
     <button type="submit" @submit.prevent.stop @click="sendMessage">Send</button>

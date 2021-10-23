@@ -61,9 +61,13 @@ export default {
   },
   methods: {
     openChat(user) {
-      this.chatOnline = true;
-      this.messageTo = user;
-      this.socket.emit('open_chat_session', {source: this.username, target: user});
+      if (user == this.username) {
+        alert('If you want to have chat with yourself - use mirror)')
+      } else {
+        this.chatOnline = true;
+        this.messageTo = user;
+        this.socket.emit('open_chat_session', {source: this.username, target: user});
+      }
     },
     leaveChat(username, messageTo) {
       this.chatOnline = false;
