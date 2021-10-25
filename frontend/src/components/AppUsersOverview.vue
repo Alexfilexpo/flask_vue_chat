@@ -3,6 +3,8 @@
     <app-connection-graph
         :activeUsersList="usersArray"
         :activeUsersLink="userLinks"
+        :messagePushed="messageSent"
+        :username="username"
         ref="graphPointer"
     />
     <div class="users-view col-md-4">
@@ -41,22 +43,14 @@ export default {
     AppChat
   },
   name: "AppUsersOverview",
-  props: {
-    username: {
-      type: String,
-      required: true
-    },
-    socket: {
-      required: true
-    }
-  },
+  props: ['username', 'socket'],
   data() {
     return {
       chatOnline: false,
       messageTo: null,
       messages: [],
       usersArray: [],
-      userLinks: [],
+      userLinks: []
     }
   },
   methods: {
@@ -86,9 +80,9 @@ export default {
       list.forEach((user) => {
         this.usersArray.push({id: user});
       });
-      this.requestGraph();
+      this.resetGraph();
     },
-    requestGraph() {
+    resetGraph() {
       this.$refs.graphPointer.createGraph();
     }
   },
@@ -107,11 +101,10 @@ export default {
       } else {
         this.userLinks.length = 0
       }
-
       if (this.chatOnline == true) {
         this.$refs.chatPointer.filterMessages()
       }
-      this.requestGraph();
+      this.resetGraph();
     })
   }
 }

@@ -10,11 +10,7 @@
 <script>
 export default {
   name: "AppLogin",
-  props: {
-    socket: {
-      required: true
-    }
-  },
+  props: ['socket'],
   data() {
     return {
       username: '',

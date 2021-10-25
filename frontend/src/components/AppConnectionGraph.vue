@@ -1,9 +1,5 @@
 <template>
-  <div class="graph-view col-md-6" style="
-    background-image: url(https://www.amcharts.com/wp-content/uploads/2013/12/demo_910_none-1.png);
-    background-size: 110%;
-    background-position: center;
-  ">
+  <div class="graph-view col-md-6">
     <svg width="560" height="360"></svg>
   </div>
 </template>
@@ -55,11 +51,8 @@ export default {
 
       // Create new graph simulation based on nodes and links data
       let simulation = d3.forceSimulation(nodes)
-          .force("charge", d3.forceManyBody().strength(-400))
+          .force("charge", d3.forceManyBody().strength(-50))
           .force("link", d3.forceLink(links).distance(200))
-          .force("x", d3.forceX())
-          .force("y", d3.forceY())
-          .alphaTarget(1)
           .on("tick", ticked)
 
       // Remove previous published graph template
@@ -73,6 +66,7 @@ export default {
           .style("stroke-dasharray", ("3, 3"))
           .attr("stroke", "#000")
           .attr("stroke-width", 6)
+          .attr("fill", "none")
           .selectAll(".link")
 
       // Create new node tag for graph template
@@ -80,73 +74,8 @@ export default {
           .attr("stroke", "#000")
           .selectAll(".node");
 
-      // for (let n = 0; n < links.length; n++) {
-      //   console.log('888888888888888888888')
-      //   console.log(links[n])
-      // }
-      //
-      // for (let n = 0; n < links.length; n++) {
-      //   console.log('SOURCE = ' + links[n])
-      //   console.log('TARGET = ' + links[n])
-      //   for (let i = 0; i < nodes.length; i++) {
-      //     if (nodes[i].id == links[n].source) {
-      //       console.log('SOURCE LINK = ' + links[n])
-      //       console.log('SOURCE NODE PROXY = ' + nodes[i])
-      //     }
-      //   }
-      // }
-
-      // for (let link_piece in this.activeUserLinks) {
-      //   console.log(link_piece)
-      //   for (let node in nodes) {
-      //     console.log(node)
-      //     if (link.source == node.id) {
-      //       console.log('opop')
-      //     }
-      //   }
-      // }
-      // for (let i = 0; i < nodes.length; i++) {
-      //   let start = i
-      //   let end = ++i
-      //   links.push({
-      //     source: nodes[start],
-      //     target: nodes[end]
-      //   });
-      // }
-
       // Recreate graph simulation with new data
       restart();
-
-      // d3.timeout(function() {
-      //   for (let i = 0; i < userList.length; i++) {
-      //     let start = i
-      //     let end = ++i
-      //     links.push({
-      //       source: userList[start],
-      //       target: userList[end],
-      //       value: Math.floor(Math.random()+1)
-      //     });
-      //   };
-      //   // links.push({source: userList[0], target: userList[1]}); // Add a-b.
-      //   // links.push({source: userList[1], target: userList[2]}); // Add b-c.
-      //   // links.push({source: userList[2], target: userList[3]}); // Add c-a.
-      //   restart();
-      // }, 1000);
-
-      //
-      // d3.interval(function() {
-      //   nodes.pop(); // Remove c.
-      //   links.pop(); // Remove c-a.
-      //   links.pop(); // Remove b-c.
-      //   restart();
-      // }, 2000, d3.now());
-      //
-      // d3.interval(function() {
-      //   nodes.push(c); // Re-add c.
-      //   links.push({source: b, target: c}); // Re-add b-c.
-      //   links.push({source: c, target: a}); // Re-add c-a.
-      //   restart();
-      // }, 2000, d3.now() + 1000);
 
       // Simulation restart for data from parent components
       function restart() {
@@ -190,4 +119,9 @@ export default {
 }
 </script>
 <style scoped>
+.graph-view {
+  background-image: url(https://www.amcharts.com/wp-content/uploads/2013/12/demo_910_none-1.png);
+  background-size: 110%;
+  background-position: center;
+}
 </style>
