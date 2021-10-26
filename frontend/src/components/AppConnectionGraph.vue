@@ -7,7 +7,7 @@
 import * as d3 from 'd3'
 
 export default {
-  props: ['activeUsersList', 'activeUsersLink', 'messageSent'],
+  props: ['activeUsersList', 'activeUsersLink', 'messageSent', 'messageFrom'],
   data () {
     return {}
   },
@@ -48,7 +48,19 @@ export default {
             }
           }
           links.push(linkObject)
-          if (this.messageSent[0] == true) {
+          if (this.messageSent[0] == true && (linkObject.source.id == this.messageFrom[0] || linkObject.target.id == this.messageFrom[0])) {
+            console.log('--- MESSAGE SENT --->')
+            console.log(this.messageSent[0])
+            console.log('<--- MESSAGE SENT ---')
+            console.log('--- MESSAGE FROM --->')
+            console.log(this.messageFrom)
+            console.log('<--- MESSAGE FROM ---')
+            console.log('--- SOURCE --->')
+            console.log(linkObject.source.id)
+            console.log('<--- SOURCE ---')
+            console.log('--- TARGET --->')
+            console.log(linkObject.target.id)
+            console.log('<--- TARGET ---')
             let additionalPath = {
               ...linkObject,
               linkPrio: 2,
@@ -57,6 +69,10 @@ export default {
           }
         }
       }
+
+      console.log('--- LINKS --->')
+      console.log(links)
+      console.log('<--- LINKS ---')
 
       // Create new graph simulation based on nodes and links data
       let simulation = d3.forceSimulation(nodes)
