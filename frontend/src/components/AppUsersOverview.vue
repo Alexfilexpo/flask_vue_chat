@@ -5,6 +5,7 @@
         :activeUsersLink="userLinks"
         :messagePushed="messageSent"
         :username="username"
+        :messageSent="messageSent"
         ref="graphPointer"
     />
     <div class="users-view col-md-4">
@@ -50,7 +51,8 @@ export default {
       messageTo: null,
       messages: [],
       usersArray: [],
-      userLinks: []
+      userLinks: [],
+      messageSent: []
     }
   },
   methods: {
@@ -69,11 +71,17 @@ export default {
     },
     newMessage(message) {
       this.messages.push(message);
+      this.messageSent.push(true);
       if (this.chatOnline == false) {
         this.$refs.userListPointer.countMessages();
       } else {
         this.$refs.chatPointer.filterMessages()
       }
+      this.resetGraph();
+      setTimeout(() => {
+        this.messageSent.length = 0
+        this.resetGraph();
+      }, 3000);
     },
     saveUsersList(list) {
       this.usersArray.length = 0
@@ -89,6 +97,11 @@ export default {
   created() {
     this.socket.on('receiveMessage', (data) => {
       this.newMessage(data.message);
+      this.resetGraph();
+      setTimeout(() => {
+        this.messageSent.length = 0
+        this.resetGraph();
+      }, 3000);
     })
     this.socket.on('updateChatSessions', (data) => {
       let active_sessions = data.data

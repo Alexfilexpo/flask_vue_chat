@@ -118,7 +118,7 @@ export default {
       // let r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y, 75/d.linkPrio);
       let dx = d.target.x - d.source.x,
           dy = d.target.y - d.source.y,
-          dr = 75/d.linkPrio;  //linknum is defined above
+          dr = 75/d.linkPrio;
       return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
     },
   }
