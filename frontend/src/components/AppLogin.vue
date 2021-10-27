@@ -4,22 +4,13 @@
       <input v-model="username" type="text" id="username" placeholder="Type your nickname here...">
       <button @click="registerUser" type="submit" id="login-button">Register</button>
     </form>
-<!--    remove after implementing example-->
-<!--    <example/>-->
-<!--    remove after implementing example-->
   </div>
 </template>
 
 <script>
-// remove after implementing example
-import Example from "./Example";
-// remove after implementing example
 
 export default {
   name: "AppLogin",
-  // remove after implementing example
-  components: {Example},
-  // remove after implementing example
   props: ['socket'],
   data() {
     return {
