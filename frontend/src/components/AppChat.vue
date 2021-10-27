@@ -1,7 +1,7 @@
 <template>
   <div class="chat-view">
     <div class="connected-users">
-      <span class="d-inline-flex">Chat between {{ username }} and {{ messageTo }}:</span>
+      <span class="d-inline-flex">Chat between {{ username }} and {{ chatWith }}:</span>
     </div>
     <div class="chat-area border border-5 border-dark mb-2">
       <div :class="message.includes(username)?'bg-primary float-start':'bg-secondary float-end'"
@@ -18,7 +18,7 @@
 <script>
 export default {
   name: "AppChat",
-  props: ['socket', 'username', 'messageTo', 'messages'],
+  props: ['socket', 'username', 'chatWith', 'messages'],
   data() {
     return {
       messageInput: null,
@@ -29,10 +29,14 @@ export default {
     sendMessage() {
       this.socket.emit('send_message', {
         'messageFrom': this.username,
-        'messageTo': this.messageTo,
+        'messageTo': this.chatWith,
         'message': this.messageInput
       });
-      this.$emit('newMessage', this.username + ': ' + this.messageInput);
+      this.$emit('newMessage', {
+        'messageFrom': this.username,
+        'messageTo': this.chatWith,
+        'message': this.username + ':' + this.messageInput
+      })
       this.messageInput = null
     },
     filterMessages() {
@@ -40,13 +44,14 @@ export default {
       this.messages.forEach((message) => {
         let message_data = message.split(':')
         let message_name = message_data[0]
-        if (message_name == this.messageTo || message_name == this.username) {
+        // TODO Filter per chat
+        if (message_name == this.chatWith || message_name == this.username) {
           this.messagesHistory.push(message);
         }
       })
     },
     leaveChat() {
-      this.$emit('leaveChat', this.username, this.messageTo);
+      this.$emit('leaveChat', this.username, this.chatWith);
     }
   }
 }

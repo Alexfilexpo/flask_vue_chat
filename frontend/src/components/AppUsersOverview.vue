@@ -7,13 +7,14 @@
         :username="username"
         :messageSent="messageSent"
         :messageFrom="messageFrom"
+        :messageTo="messageTo"
         ref="graphPointer"
     />
     <div class="users-view col-md-4">
       <app-chat
           v-if="chatOnline"
           :username="username"
-          :messageTo="messageTo"
+          :chatWith="chatWith"
           :socket="socket"
           :messages="messages"
           @newMessage="newMessage"
@@ -49,12 +50,14 @@ export default {
   data() {
     return {
       chatOnline: false,
-      messageTo: null,
+      chatWith: null,
       messages: [],
       usersArray: [],
       userLinks: [],
+
       messageSent: [],
-      messageFrom: []
+      messageFrom: [],
+      messageTo: []
     }
   },
   methods: {
@@ -63,7 +66,7 @@ export default {
         alert('If you want to have chat with yourself - use mirror)')
       } else {
         this.chatOnline = true;
-        this.messageTo = user;
+        this.chatWith = user;
         this.socket.emit('open_chat_session', {source: this.username, target: user});
       }
     },
@@ -71,19 +74,21 @@ export default {
       this.chatOnline = false;
       this.socket.emit('close_chat_session', {source: this.username, target: messageTo})
     },
-    newMessage(message) {
-      this.messages.push(message);
+    newMessage(message_data) {
       this.messageSent.push(true);
-      this.messageFrom.push(message.split(":")[0])
+      this.messageFrom.push(message_data.messageFrom)
+      this.messageTo.push(message_data.messageTo)
+      this.messages.push(message_data.message);
       if (this.chatOnline == false) {
         this.$refs.userListPointer.countMessages();
       } else {
         this.$refs.chatPointer.filterMessages()
       }
       this.resetGraph();
+      this.messageSent.length = 0
+      this.messageFrom.length = 0
+      this.messageTo.length = 0
       setTimeout(() => {
-        this.messageSent.length = 0
-        this.messageFrom.length = 0
         this.resetGraph();
       }, 3000);
     },
@@ -100,14 +105,7 @@ export default {
   },
   created() {
     this.socket.on('receiveMessage', (data) => {
-      this.newMessage(data.message);
-      this.messageFrom.push(data.messageFrom)
-      this.resetGraph();
-      setTimeout(() => {
-        this.messageSent.length = 0
-        this.messageFrom.length = 0
-        this.resetGraph();
-      }, 3000);
+      this.newMessage(data);
     })
     this.socket.on('updateChatSessions', (data) => {
       let active_sessions = data.data

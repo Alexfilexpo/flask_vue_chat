@@ -2,10 +2,10 @@
   <div class="register-form d-flex justify-content-center">
     <form @submit.prevent>
       <input v-model="username" type="text" id="username" placeholder="Type your nickname here...">
-      <button @click="registerUser" type="submit">Register</button>
+      <button @click="registerUser" type="submit" id="login-button">Register</button>
     </form>
 <!--    remove after implementing example-->
-    <example/>
+<!--    <example/>-->
 <!--    remove after implementing example-->
   </div>
 </template>
@@ -39,5 +39,14 @@ export default {
 </script>
 
 <style scoped>
-
+#username {
+  border: 2px solid black;
+  margin-right: 10px;
+  padding-left: 10px;
+}
+#login-button {
+  width: 100px;
+  height: 30px;
+  border: 2px solid black;
+}
 </style>

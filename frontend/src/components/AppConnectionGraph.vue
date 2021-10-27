@@ -7,7 +7,7 @@
 import * as d3 from 'd3'
 
 export default {
-  props: ['activeUsersList', 'activeUsersLink', 'messageSent', 'messageFrom'],
+  props: ['activeUsersList', 'activeUsersLink', 'messageSent', 'messageFrom', 'messageTo'],
   data () {
     return {}
   },
@@ -23,7 +23,6 @@ export default {
             .range(d3.schemeCategory10)
 
       // Create nodes (for circles) and links (for links between circles) arrays
-      // let onlineNodes = this.activeUsersList
       let onlineLinks = this.activeUsersLink
       let nodes = [],
           links = [];
@@ -48,31 +47,20 @@ export default {
             }
           }
           links.push(linkObject)
-          if (this.messageSent[0] == true && (linkObject.source.id == this.messageFrom[0] || linkObject.target.id == this.messageFrom[0])) {
-            console.log('--- MESSAGE SENT --->')
-            console.log(this.messageSent[0])
-            console.log('<--- MESSAGE SENT ---')
-            console.log('--- MESSAGE FROM --->')
-            console.log(this.messageFrom)
-            console.log('<--- MESSAGE FROM ---')
-            console.log('--- SOURCE --->')
-            console.log(linkObject.source.id)
-            console.log('<--- SOURCE ---')
-            console.log('--- TARGET --->')
-            console.log(linkObject.target.id)
-            console.log('<--- TARGET ---')
+        }
+      }
+
+      if (this.messageSent[0] == true) {
+        links.forEach((link) => {
+          if (link.source.id == this.messageFrom[0] && link.target.id == this.messageTo) {
             let additionalPath = {
-              ...linkObject,
+              ...link,
               linkPrio: 2,
             }
             links.push(additionalPath)
           }
-        }
+        })
       }
-
-      console.log('--- LINKS --->')
-      console.log(links)
-      console.log('<--- LINKS ---')
 
       // Create new graph simulation based on nodes and links data
       let simulation = d3.forceSimulation(nodes)
