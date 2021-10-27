@@ -78,11 +78,13 @@ export default {
       this.messageSent.push(true);
       this.messageFrom.push(message_data.messageFrom)
       this.messageTo.push(message_data.messageTo)
-      this.messages.push(message_data.message);
-      if (this.chatOnline == false) {
-        this.$refs.userListPointer.countMessages();
-      } else {
-        this.$refs.chatPointer.filterMessages()
+      if (message_data.message != null) {
+        this.messages.push(message_data.message)
+        if (this.chatOnline == false) {
+          this.$refs.userListPointer.countMessages();
+        } else {
+          this.$refs.chatPointer.filterMessages()
+        }
       }
       this.resetGraph();
       this.messageSent.length = 0

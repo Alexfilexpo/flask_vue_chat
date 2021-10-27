@@ -52,7 +52,7 @@ export default {
 
       if (this.messageSent[0] == true) {
         links.forEach((link) => {
-          if (link.source.id == this.messageFrom[0] && link.target.id == this.messageTo) {
+          if ((link.source.id == this.messageFrom[0] && link.target.id == this.messageTo) || (link.source.id == this.messageTo && link.target.id == this.messageFrom[0])) {
             let additionalPath = {
               ...link,
               linkPrio: 2,

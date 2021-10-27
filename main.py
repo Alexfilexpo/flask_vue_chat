@@ -70,6 +70,7 @@ def send_message(payload):
     message = payload['message']
     print(f'Send message "{message}" from {send_from} to {send_to}')
     emit('receiveMessage', {'messageFrom': send_from, 'messageTo': send_to, 'message': send_from + ':' + message}, room=send_to_room_id)
+    emit('receiveMessage', {'messageFrom': send_from, 'messageTo': send_to, 'message': None}, broadcast=True)
 
 
 if __name__ == '__main__':

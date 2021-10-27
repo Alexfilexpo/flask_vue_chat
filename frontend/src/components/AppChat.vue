@@ -27,17 +27,19 @@ export default {
   },
   methods: {
     sendMessage() {
-      this.socket.emit('send_message', {
+      if (this.messageInput != null) {
+        this.socket.emit('send_message', {
         'messageFrom': this.username,
         'messageTo': this.chatWith,
         'message': this.messageInput
-      });
-      this.$emit('newMessage', {
-        'messageFrom': this.username,
-        'messageTo': this.chatWith,
-        'message': this.username + ':' + this.messageInput
-      })
-      this.messageInput = null
+        });
+        this.$emit('newMessage', {
+          'messageFrom': this.username,
+          'messageTo': this.chatWith,
+          'message': this.username + ':' + this.messageInput
+        })
+        this.messageInput = null
+      }
     },
     filterMessages() {
       this.messagesHistory.length = 0
