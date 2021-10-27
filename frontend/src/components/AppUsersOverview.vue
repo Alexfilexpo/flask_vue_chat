@@ -83,15 +83,14 @@ export default {
         messageGroup = message_data.messageTo+'-'+message_data.messageFrom
       }
       if (message_data.message != null) {
+        if (messageGroup in this.messages) {
+          this.messages[messageGroup].push(message_data.message)
+        } else {
+          this.messages[messageGroup] = []
+          this.messages[messageGroup].push(message_data.message)
+        }
         if (this.chatOnline == false) {
           this.$refs.userListPointer.countMessages();
-        } else {
-          if (messageGroup in this.messages) {
-            this.messages[messageGroup].push(message_data.message)
-          } else {
-            this.messages[messageGroup] = []
-            this.messages[messageGroup].push(message_data.message)
-          }
         }
       }
       this.resetGraph();

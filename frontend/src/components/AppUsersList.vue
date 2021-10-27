@@ -31,15 +31,10 @@ export default {
     },
     countMessages() {
       let rawMessagesCounter = {}
-      this.messages.forEach((message) => {
-        let messageData = message.split(':')
-        let messageFromName = messageData[0]
-        if (messageFromName in rawMessagesCounter) {
-          rawMessagesCounter[messageFromName] += 1
-        } else {
-          rawMessagesCounter[messageFromName] = 1
-        }
-      })
+      for (const [sessionName, messagesList] of Object.entries(this.messages)) {
+        let userWith = sessionName.split('-')[1]
+        rawMessagesCounter[userWith] = messagesList.length
+      }
       this.messagesCounter = rawMessagesCounter
     }
   },
