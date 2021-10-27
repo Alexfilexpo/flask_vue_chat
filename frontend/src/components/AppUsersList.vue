@@ -7,7 +7,7 @@
     <div class="ms-auto users-list">
       <span>List of active users:</span>
       <ul>
-        <li v-for="user in activeUsers" v-bind:key="user" @click="startChat(user)">{{ user }}
+        <li v-for="user in activeUsers" v-bind:key="user" @click="startChat(user)" class="active-user" >{{ user }}
           <span v-if="user in messagesCounter"> [{{ messagesCounter[user] }} new messages]</span>
         </li>
       </ul>
@@ -51,5 +51,14 @@ export default {
 <style scoped>
 .users-list {
   width: 80%;
+}
+.active-user {
+  margin-top: 10px;
+  padding: 5px 5px;
+  cursor: pointer;
+}
+.active-user:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 5px;
 }
 </style>

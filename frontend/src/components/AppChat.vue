@@ -9,9 +9,9 @@
            v-for="message in this.messages[this.username+'-'+this.chatWith]"
            :key="message">{{ message }}</div>
     </div>
-    <input type="text" v-model="messageInput" @keyup.enter="sendMessage" placeholder="Type your message here...">
-    <button type="submit" @submit.prevent.stop @click="sendMessage">Send</button>
-    <button type="submit" @submit.prevent.stop @click="leaveChat">Leave chat</button>
+    <input type="text" id="chat-message" v-model="messageInput" @keyup.enter="sendMessage" placeholder="Type your message here...">
+    <button type="submit" class="chat-button" @submit.prevent.stop @click="sendMessage">Send</button>
+    <button type="submit" class="chat-button" @submit.prevent.stop @click="leaveChat">Leave chat</button>
   </div>
 </template>
 
@@ -57,5 +57,13 @@ export default {
 .chat-msg {
   width: 200px;
   height: 50px;
+}
+#chat-message {
+  border: 2px solid black;
+}
+.chat-button {
+  border: 2px solid black;
+  margin-left: 5px;
+  padding: 0 5px;
 }
 </style>

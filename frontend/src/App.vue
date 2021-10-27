@@ -40,5 +40,7 @@ export default {
 .container {
   padding: 25px 25px;
 }
-
+.text-center {
+  cursor: default;
+}
 </style>
