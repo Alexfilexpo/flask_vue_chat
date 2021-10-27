@@ -19,7 +19,6 @@
           :messages="messages"
           @newMessage="newMessage"
           @leaveChat="leaveChat"
-          ref="chatPointer"
       />
       <app-users-list
           v-else
@@ -51,10 +50,9 @@ export default {
     return {
       chatOnline: false,
       chatWith: null,
-      messages: [],
+      messages: {},
       usersArray: [],
       userLinks: [],
-
       messageSent: [],
       messageFrom: [],
       messageTo: []
@@ -78,12 +76,22 @@ export default {
       this.messageSent.push(true);
       this.messageFrom.push(message_data.messageFrom)
       this.messageTo.push(message_data.messageTo)
+      let messageGroup = ''
+      if (message_data.messageFrom == this.username) {
+        messageGroup = message_data.messageFrom+'-'+message_data.messageTo
+      } else {
+        messageGroup = message_data.messageTo+'-'+message_data.messageFrom
+      }
       if (message_data.message != null) {
-        this.messages.push(message_data.message)
         if (this.chatOnline == false) {
           this.$refs.userListPointer.countMessages();
         } else {
-          this.$refs.chatPointer.filterMessages()
+          if (messageGroup in this.messages) {
+            this.messages[messageGroup].push(message_data.message)
+          } else {
+            this.messages[messageGroup] = []
+            this.messages[messageGroup].push(message_data.message)
+          }
         }
       }
       this.resetGraph();
@@ -119,9 +127,6 @@ export default {
         })
       } else {
         this.userLinks.length = 0
-      }
-      if (this.chatOnline == true) {
-        this.$refs.chatPointer.filterMessages()
       }
       this.resetGraph();
     })

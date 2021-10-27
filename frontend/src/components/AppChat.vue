@@ -6,7 +6,7 @@
     <div class="chat-area border border-5 border-dark mb-2">
       <div :class="message.includes(username)?'bg-primary float-start':'bg-secondary float-end'"
            class="chat-msg border border-1 rounded px-2 text-white p-2"
-           v-for="message in messagesHistory"
+           v-for="message in this.messages[this.username+'-'+this.chatWith]"
            :key="message">{{ message }}</div>
     </div>
     <input type="text" v-model="messageInput" @keyup.enter="sendMessage" placeholder="Type your message here...">
@@ -40,17 +40,6 @@ export default {
         })
         this.messageInput = null
       }
-    },
-    filterMessages() {
-      this.messagesHistory.length = 0
-      this.messages.forEach((message) => {
-        let message_data = message.split(':')
-        let message_name = message_data[0]
-        // TODO Filter per chat
-        if (message_name == this.chatWith || message_name == this.username) {
-          this.messagesHistory.push(message);
-        }
-      })
     },
     leaveChat() {
       this.$emit('leaveChat', this.username, this.chatWith);
