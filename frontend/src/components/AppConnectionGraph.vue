@@ -63,6 +63,7 @@ export default {
       }
 
       // Create new graph simulation based on nodes and links data
+      // TODO Make nodes stay within svg view size
       let simulation = d3.forceSimulation(nodes)
           .force("charge", d3.forceManyBody().strength(-1000))
           .force("link", d3.forceLink(links).id(d => d.id).distance(100))
